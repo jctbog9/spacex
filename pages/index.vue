@@ -1,72 +1,52 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        spacex
-      </h1>
-      <h2 class="subtitle">
-        My sweet Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div>
+    <div>{{message}}</div>
+    <button v-on:click="useFetch()">Get Latest Launch</button>
+    <div v-if="mission_name">Name: {{mission_name}}</div>
+    <div v-if="launch_year">Year: {{launch_year}}</div>
+    <div v-if="launch_success">It was a success!</div>
+      <div>
+        <button v-on:click="clearLaunch()">Clear Launch</button>
       </div>
-    </div>
+      <div v-if="mission_name">
+        <button class="red" v-on:click="setFailure()">Declare Failure</button>
+      </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+  import axios from 'axios'
 
-export default {
-  components: {
-    Logo
+  export default {
+    data() {
+      return { 
+        message: 'SpaceX- Latest Launch Info!',
+        mission_name: undefined,
+        launch_year: undefined,
+        launch_success: false
+      }
+    },
+    methods: {
+      clearLaunch: function () {
+        this.mission_name = undefined
+        this.launch_year = undefined
+        this.launch_success = false
+      },
+      setFailure: function () {
+        this.launch_success = false
+      },
+      useFetch: async function () {
+        const { data } = await axios.get('https://api.spacexdata.com/v3/launches/latest')
+        this.mission_name = data.mission_name
+        this.launch_year = data.launch_year
+        this.launch_success = data.launch_success
+      }
+    }
   }
-}
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+  .red {
+    background-color: red;
+  }
 </style>
