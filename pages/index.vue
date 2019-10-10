@@ -1,6 +1,9 @@
 <template>
   <div>
-    {{message}}
+    <h2>{{message}}</h2>
+    <nuxt-link :to="'/flashcards'">
+      <button>Go To Flashcards</button>
+    </nuxt-link>
     <ul>
       <li v-for="launch in launches" v-bind:key="launch.flight_number">
         <nuxt-link :to="`launches/${launch.flight_number}`">{{launch.mission_name}}</nuxt-link>
