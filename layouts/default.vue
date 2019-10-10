@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div v-if="$nuxt.$route.path !== '/'">
+      <nuxt-link :to="'/'">
+        <button>Home</button>
+      </nuxt-link>
+    </div>
     <nuxt />
   </div>
 </template>
