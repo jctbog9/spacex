@@ -4,22 +4,25 @@
     <nuxt-link :to="'/flashcards'">
       <button>Go To Flashcards</button>
     </nuxt-link>
-    <ul>
-      <li v-for="launch in launches" v-bind:key="launch.flight_number">
-        <nuxt-link :to="`launches/${launch.flight_number}`">{{launch.mission_name}}</nuxt-link>
-      </li>
-    </ul>
+    <div class="launchWrapper">
+      <nuxt-link class="launchCard" :to="`launches/${launch.flight_number}`" v-for="launch in launches" v-bind:key="launch.flight_number">
+        <p>{{launch.mission_name}}</p>
+        <img :src="imgSrc"/>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import rocket from '../assets/images/rocketinsights.svg'
 
   export default {
     data() {
       return { 
         message: 'Welcome! Here you can view all SpaceX launches!',
-        launches: []
+        launches: [],
+        imgSrc: rocket
       }
     },
     methods: {
@@ -35,7 +38,20 @@
 </script>
 
 <style>
-  .red {
-    background-color: red;
+  .launchWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 90%;
+  }
+
+  .launchCard {
+    justify-content: space-evenly;
+    align-content: center;
+    width: 180px;
+    height: 240px;
+    border: 1px solid #000000;
+    margin: 10px;
   }
 </style>
